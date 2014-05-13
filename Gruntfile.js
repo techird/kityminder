@@ -66,7 +66,7 @@ module.exports = function ( grunt ) {
                 files: ( function () {
                     var files = {};
                     files[ distPath + 'kityminder.all.min.js' ] = distPath + 'kityminder.all.js';
-                    console.log(files);
+                    console.log( files );
                     return files;
                 } )()
             }
@@ -75,9 +75,9 @@ module.exports = function ( grunt ) {
         copy: {
             dir: {
                 files: [ {
-                    src: [ 'dialogs/**', 'lang/**', 'lib/**', 'social/**', 'themes/**', 'index.html' ],
+                    src: [ 'pan/**', 'lang/**', 'lib/**', 'social/**', 'themes/**', 'index.html' ],
                     dest: distPath
-                }]
+                } ]
             },
             kity: {
                 expand: true,
@@ -89,12 +89,6 @@ module.exports = function ( grunt ) {
                 expand: true,
                 src: 'kityminder.config.js',
                 dest: distPath
-            },
-            mise: {
-                files: [{
-                    src: ['LICENSE', 'favicon.ico', 'README.md'],
-                    dest: distPath
-                }]
             }
         },
 
@@ -142,7 +136,7 @@ module.exports = function ( grunt ) {
                 }
             }
         },
-        
+
         regarde: {
             js: {
                 files: 'src/**/*.js',

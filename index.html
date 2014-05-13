@@ -34,7 +34,7 @@
         &nbsp;&nbsp;&nbsp;&nbsp;
         <a class="file" data-type="km" data-url="https://c.pcs.baidu.com/rest/2.0/pcs/file?path=%2Fapps%2Fkityminder%2Fkm%E6%A0%BC%E5%BC%8F-%E7%BD%91%E7%9B%98.km&access_token=52.cadcb9ad33b982654c2d0cd641b33b54.2592000.1401332814.2936331757-2246711&method=download" href="javascript:;">KM 格式</a>
         &nbsp;&nbsp;&nbsp;&nbsp;
-        <a class="file" data-type="mmap" data-url="/km/pan/testfile.mmap" href="javascript:;">Mind Manager 格式</a>
+        <a class="file" data-type="mmap" data-url="pan/testfile.mmap" href="javascript:;">Mind Manager 格式</a>
     </div>
 
     <!--Dialog 模板-->
@@ -65,7 +65,7 @@
         $loading.show();
         $loadingProgress.text('正在加载...');
 
-        KityMinder.load({
+        var minder = KityMinder.load({
             url: $(this).data('url'),
             type: $(this).data('type'),
             target: 'kity-minder',

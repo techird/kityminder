@@ -1,0 +1,80 @@
+.km-dialog {
+    position: absolute;
+    left: 50px;
+    right: 50px;
+    top: 100px;
+    height: 500px;
+    box-shadow: 4px 4px 8px rgba(0,0,0, .4);
+    background: rgb(50, 60, 61) url(grid.png) repeat;
+}
+
+.km-dialog .loading {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    background: rgb(50, 60, 61) url(grid.png) repeat;
+    z-index: 999999;
+}
+
+.km-dialog .loading.off {
+    display: none;
+}
+
+.km-dialog .loading .loading-progress {
+    position: absolute;
+    height: 30px;
+    line-height: 30px;
+    width: 250px;
+    color: #ccc;
+    background: #252525;
+    border: 1px solid #000;
+    box-shadow: 0 1px 0 #555;
+    border-radius: 6px;
+    top: 50%;
+    left: 50%;
+    margin-top: -15px;
+    margin-left: -125px;
+    text-align: center;
+}
+
+.km-dialog .close {
+    position: absolute;
+    right: -12px;
+    top: -17px;
+    border-radius: 20px;
+    width: 28px;
+    height: 28px;
+    background-color: #222;
+    color: #FFF;
+    border: 3px #FFF solid;
+    box-shadow: 2px 2px 9px #000;
+    font-size: 16px;
+    line-height: 30px;
+    text-indent: 9px;
+    font-family: Arial;
+    cursor: pointer;
+    z-index: 9999999;
+}
+
+.km-dialog .close:hover {
+    background: #900;
+}
+.km-dialog .close:active {
+    box-shadow: 2px 2px 9px #000, inset 0px 2px 3px rgba(0,0,0,.5);
+    background: #700;
+}
+
+.kmui-container .kmui-toolbar {
+    margin-right: 10px;
+}
+
+.files {
+    margin: 0 50px;
+    line-height: 100px;
+}
+
+.files a{
+    color: #000;
+}

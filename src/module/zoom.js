@@ -31,7 +31,8 @@ KityMinder.registerModule( 'Zoom', function () {
         execute: zoomMinder,
         queryValue: function ( minder ) {
             return minder.zoom;
-        }
+        },
+        enableReadOnly: false
     } );
 
     var ZoomInCommand = kity.createClass( 'ZoomInCommand', {

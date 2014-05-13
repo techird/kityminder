@@ -1,6 +1,6 @@
 /*!
  * ====================================================
- * kityminder - v1.1.3 - 2014-05-09
+ * kityminder - v1.1.3 - 2014-05-13
  * https://github.com/fex-team/kityminder
  * GitHub: https://github.com/fex-team/kityminder.git 
  * Copyright (c) 2014 f-cube @ FEX; Licensed MIT
@@ -2395,7 +2395,8 @@ KityMinder.registerModule( "LayoutModule", function () {
 			return name;
 		},
 		getCurrentLayoutStyle: function () {
-			var curStyle = this.getCurrentStyle();
+			//var curStyle = this.getCurrentStyle();
+			var curStyle = 'default';
 			return this.getLayoutStyle( curStyle ).getCurrentLayoutStyle.call( this );
 		},
 		highlightNode: function ( node ) {
@@ -2468,7 +2469,7 @@ KityMinder.registerModule( "LayoutModule", function () {
 			n.getBgRc().clear();
 		} );
 		km.setCurrentStyle( style );
-		km.initStyle();
+		//km.initStyle();
 		return style;
 	};
 	var SwitchLayoutCommand = kity.createClass( "SwitchLayoutCommand", ( function () {
@@ -3212,12 +3213,35 @@ KityMinder.registerModule( "LayoutDefault", function () {
 			if ( historyPoint ) _root.setPoint( historyPoint.x, historyPoint.y );
 			//渲染首层节点
 			var mains = _root.getChildren();
-			for ( var i = 0; i < mains.length; i++ ) {
-				this.appendChildNode( _root, mains[ i ] );
-				if ( mains[ i ].isExpanded() && ( mains[ i ].getChildren().length > 0 ) ) {
-					minder.expandNode( mains[ i ] );
-				}
+			var _buffer = [ _root ];
+			var nodes = [ _root ];
+			var idx = 0,
+				step = 10;
+			//统计节点数
+			while ( _buffer.length !== 0 ) {
+				var children = _buffer[ 0 ].getChildren();
+				_buffer = _buffer.concat( children );
+				nodes = nodes.concat( children );
+				_buffer.shift();
 			}
+			var nodeAppendInterval = window.setInterval( function () {
+				for ( var i = idx; i < nodes.length && i < ( idx + step ); i++ ) {
+					var curNode = nodes[ i ];
+					var parent = curNode.getParent();
+					if ( parent ) {
+						minder.appendChildNode( parent, curNode );
+					}
+				}
+				//minder.fire( 'renderprogress' ); //在这里抛出render过程的值
+				minder._fire( new MinderEvent( 'renderprogress', {
+					progress: i / nodes.length
+				}, true ) );
+				if ( i === nodes.length ) {
+					window.clearInterval( nodeAppendInterval );
+					minder.fire( 'rendercomplete' );
+				}
+				idx += step;
+			}, 0 );
 			_root.setPoint( _root.getLayout().x, _root.getLayout().y );
 		},
 		expandNode: function ( ico ) {
@@ -6138,7 +6162,8 @@ KityMinder.registerModule( 'Zoom', function () {
         execute: zoomMinder,
         queryValue: function ( minder ) {
             return minder.zoom;
-        }
+        },
+        enableReadOnly: false
     } );
 
     var ZoomInCommand = kity.createClass( 'ZoomInCommand', {
@@ -9346,11 +9371,11 @@ KityMinder.registerProtocal( 'mindmanager', function () {
 
     function xml2km( xml ) {
         var json = $.xml2json( xml );
-        
+
         var result = {};
         processTopic( json.OneTopic.Topic, result );
 
-        console.log(result);
+        console.log( result );
         return result;
     }
 
@@ -9359,7 +9384,7 @@ KityMinder.registerProtocal( 'mindmanager', function () {
             zipReader.getEntries( onend );
         }, onerror );
     }
-
+    //var executed = false;
     return {
         fileDescription: 'mindmanager格式文件',
         fileExtension: '.mmap',
@@ -9368,14 +9393,14 @@ KityMinder.registerProtocal( 'mindmanager', function () {
 
             return {
                 then: function ( local, callback ) {
-
                     getEntries( local, function ( entries ) {
-                        entries.forEach( function ( entry ) {
+                        Utils.each( entries, function ( i, entry ) {
                             if ( entry.filename == 'Document.xml' ) {
                                 entry.getData( new zip.TextWriter(), function ( text ) {
                                     var km = xml2km( $.parseXML( text ) );
                                     callback && callback( km );
                                 } );
+                                return false;
                             }
                         } );
                     } );
